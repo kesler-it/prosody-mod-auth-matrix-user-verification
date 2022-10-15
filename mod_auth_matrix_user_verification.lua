@@ -47,6 +47,8 @@ end
 local uvsSyncPowerLevels = module:get_option("uvs_sync_power_levels", false);
 module:log("info", "uvsSyncPowerLevels = %s", uvsSyncPowerLevels);
 
+module:depends("jitsi_session");
+
 -- define auth provider
 local provider = {};
 
@@ -58,19 +60,11 @@ function init_session(event)
 	local query = request.url.query;
 
 	if query ~= nil then
-        local params = formdecode(query);
+		local params = formdecode(query);
 
-        -- token containing the information we need: openid token and room ID
-        session.auth_token = query and params.token or nil;
-
-        -- previd is used together with https://modules.prosody.im/mod_smacks.html
-        -- the param is used to find resumed session and re-use anonymous(random) user id
-        -- (see get_username_from_token)
-        session.previd = query and params.previd or nil;
-
-        -- The room name
-        session.jitsi_room = params.room;
-    end
+		-- token containing the information we need: openid token and room ID
+		session.auth_token = query and params.token or nil;
+	end
 end
 
 module:hook_global("bosh-session", init_session);
