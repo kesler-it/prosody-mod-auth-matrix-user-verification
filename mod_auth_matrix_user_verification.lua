@@ -184,7 +184,7 @@ local function process_and_verify_token(session)
         return false, "bad-request", "Matrix room ID must be given."
     end
 
-    local decodedRoomId = basexx.from_base32(session.jitsi_room);
+    local decodedRoomId = basexx.from_base32(session.jitsi_web_query_room);
     if decodedRoomId ~= data.context.matrix.room_id then
         module:log("info", "REQUEST_COMPLETE reason:jitsi_and_matrix_room_mismatch")
         return false, "access-denied", "Jitsi room does not match Matrix room"
